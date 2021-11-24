@@ -1,3 +1,4 @@
 .idea
 venv
+blog-env
 __pycache__/
