@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends, status, HTTPException
+from fastapi import FastAPI, Depends, Response, status, HTTPException
 from sqlalchemy.orm import Session
 
 from . import schemas, models
@@ -40,3 +40,10 @@ def create(request: schemas.Blog, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(new_blog)
     return new_blog
+
+
+@app.delete("/blog/{id}", status_code=status.HTTP_204_NO_CONTENT)
+def delete_blog(blog_id: int, db: Session = Depends(get_db)):
+    db.query(models.Blog).filter(models.Blog.id == blog_id).delete(synchronize_session=False)
+    db.commit()
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
