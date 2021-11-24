@@ -22,3 +22,8 @@ def unpublished():
 @app.get("/blog/{blog_id}")
 def show(blog_id: int):
     return {"data": blog_id}
+
+
+@app.post("/blog")
+def create_blog():
+    return {"data": "Blog was created"}
