@@ -2,3 +2,4 @@
 venv
 blog-env
 __pycache__/
+blog.db
