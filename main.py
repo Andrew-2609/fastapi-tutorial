@@ -1,13 +1,17 @@
+from typing import Optional
+
 from fastapi import FastAPI
 
 app = FastAPI()
 
 
-@app.get("/")
-def index():
-    return {
-        "data": "blog list"
-    }
+# noinspection PyUnusedLocal
+@app.get("/blog")
+def index(limit: int = 10, published: bool = True, sort: Optional[str] = None):
+    if published:
+        return {"data": f"{limit} published blogs from the database"}
+    else:
+        return {"data": f"{limit} blogs from the database"}
 
 
 @app.get("/blog/unpublished")
