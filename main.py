@@ -16,13 +16,9 @@ def index(limit: int = 10, published: bool = True, sort: Optional[str] = None):
 
 @app.get("/blog/unpublished")
 def unpublished():
-    return {
-        "data": "all unpublished blogs"
-    }
+    return {"data": "all unpublished blogs"}
 
 
 @app.get("/blog/{blog_id}")
 def show(blog_id: int):
-    return {
-        "data": blog_id
-    }
+    return {"data": blog_id}
