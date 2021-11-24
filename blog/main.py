@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI, Depends, Response, status, HTTPException
 from sqlalchemy.orm import Session
 
@@ -17,13 +18,13 @@ def get_db():
         db.close()
 
 
-@app.get("/blog")
+@app.get("/blog", response_model=List[schemas.ShowBlog])
 def get_all(db: Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
 
 
-@app.get("/blog/{id}", status_code=status.HTTP_200_OK)
+@app.get("/blog/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ShowBlog)
 def get_by_id(blog_id: int, db: Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == blog_id).first()
 
