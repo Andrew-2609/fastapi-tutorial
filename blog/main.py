@@ -16,6 +16,12 @@ def get_db():
         db.close()
 
 
+@app.get("/blog")
+def get_all(db: Session = Depends(get_db)):
+    blogs = db.query(models.Blog).all()
+    return blogs
+
+
 @app.post("/blog")
 def create(request: schemas.Blog, db: Session = Depends(get_db)):
     new_blog = models.Blog(title=request.title, body=request.body)
