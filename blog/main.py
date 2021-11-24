@@ -1,5 +1,6 @@
 from fastapi import FastAPI, Depends
 from sqlalchemy.orm import Session
+
 from . import schemas, models
 from .database import engine, SessionLocal
 
@@ -20,6 +21,12 @@ def get_db():
 def get_all(db: Session = Depends(get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
+
+
+@app.get("/blog/{id}")
+def get_by_id(blog_id: int, db: Session = Depends(get_db)):
+    blog = db.query(models.Blog).filter(models.Blog.id == blog_id).first()
+    return blog
 
 
 @app.post("/blog")
