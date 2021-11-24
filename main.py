@@ -24,6 +24,12 @@ def show(blog_id: int):
     return {"data": blog_id}
 
 
+class Blog(BaseModel):
+    title: str
+    body: str
+    published_at: Optional[bool]
+
+
 @app.post("/blog")
 def create_blog():
     return {"data": "Blog was created"}
