@@ -11,7 +11,7 @@ class ShowBlog(Blog):
         orm_mode = True
 
 
-def User(BaseModel):
+class User(BaseModel):
     name: str
     email: str
     password: str
