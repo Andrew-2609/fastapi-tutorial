@@ -1,6 +1,7 @@
 from typing import List
 
 from fastapi import FastAPI, Depends, Response, status, HTTPException
+from passlib.context import CryptContext
 from sqlalchemy.orm import Session
 
 from . import schemas, models
@@ -73,9 +74,13 @@ def delete_blog(blog_id: int, db: Session = Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+
 @app.post("/user")
 def create_user(request: schemas.User, db: Session = Depends(get_db)):
-    new_user = models.User(name=request.name, email=request.email, password=request.password)
+    hashed_password = pwd_context.hash(request.password)
+    new_user = models.User(name=request.name, email=request.email, password=hashed_password)
 
     db.add(new_user)
     db.commit()
