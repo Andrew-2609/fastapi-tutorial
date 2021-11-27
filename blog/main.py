@@ -74,7 +74,7 @@ def delete_blog(blog_id: int, db: Session = Depends(get_db)):
     return Response(status_code=status.HTTP_204_NO_CONTENT)
 
 
-@app.post("/user")
+@app.post("/user", response_model=schemas.ShowUser)
 def create_user(request: schemas.User, db: Session = Depends(get_db)):
     hashed_password = Hash.bcrypt(request.password)
     new_user = models.User(name=request.name, email=request.email, password=hashed_password)
