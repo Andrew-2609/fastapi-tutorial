@@ -1,23 +1,16 @@
-from typing import List
-
 from fastapi import FastAPI, Depends, Response, status, HTTPException
 from sqlalchemy.orm import Session
 
 from . import schemas, models
 from .database import engine, get_db
 from .hashing import Hash
+from .routers import blog
 
 app = FastAPI()
 
 models.Base.metadata.create_all(engine)
 
-
-
-
-@app.get("/blog", response_model=List[schemas.ShowBlog], tags=["blogs"])
-def get_all_blogs(db: Session = Depends(get_db)):
-    blogs = db.query(models.Blog).all()
-    return blogs
+app.include_router(router=blog.router)
 
 
 @app.get("/blog/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ShowBlog, tags=["blogs"])
