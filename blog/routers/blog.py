@@ -7,7 +7,7 @@ from .. import schemas, database, models
 from ..database import get_db
 
 router = APIRouter(
-    tags=["blogs"]
+    tags=["Blogs"]
 )
 
 
