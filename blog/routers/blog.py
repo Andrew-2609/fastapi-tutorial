@@ -6,16 +6,18 @@ from sqlalchemy.orm import Session
 from .. import schemas, database, models
 from ..database import get_db
 
-router = APIRouter()
+router = APIRouter(
+    tags=["blogs"]
+)
 
 
-@router.get("/blog", response_model=List[schemas.ShowBlog], tags=["blogs"])
+@router.get("/blog", response_model=List[schemas.ShowBlog])
 def get_all_blogs(db: Session = Depends(database.get_db)):
     blogs = db.query(models.Blog).all()
     return blogs
 
 
-@router.get("/blog/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ShowBlog, tags=["blogs"])
+@router.get("/blog/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ShowBlog)
 def get_blog_by_id(blog_id: int, db: Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == blog_id).first()
 
@@ -25,7 +27,7 @@ def get_blog_by_id(blog_id: int, db: Session = Depends(get_db)):
     return blog
 
 
-@router.post("/blog", status_code=status.HTTP_201_CREATED, tags=["blogs"])
+@router.post("/blog", status_code=status.HTTP_201_CREATED)
 def create_blog(request: schemas.Blog, db: Session = Depends(get_db)):
     new_blog = models.Blog(title=request.title, body=request.body, user_id=1)
     db.add(new_blog)
@@ -34,7 +36,7 @@ def create_blog(request: schemas.Blog, db: Session = Depends(get_db)):
     return new_blog
 
 
-@router.put("/blog/{id}", status_code=status.HTTP_202_ACCEPTED, tags=["blogs"])
+@router.put("/blog/{id}", status_code=status.HTTP_202_ACCEPTED)
 def update_blog(blog_id: int, request: schemas.Blog, db: Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == blog_id)
 
@@ -50,7 +52,7 @@ def update_blog(blog_id: int, request: schemas.Blog, db: Session = Depends(get_d
     return response
 
 
-@router.delete("/blog/{id}", status_code=status.HTTP_204_NO_CONTENT, tags=["blogs"])
+@router.delete("/blog/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_blog(blog_id: int, db: Session = Depends(get_db)):
     blog = db.query(models.Blog).filter(models.Blog.id == blog_id)
 
