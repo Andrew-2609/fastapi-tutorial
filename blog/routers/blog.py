@@ -5,6 +5,7 @@ from sqlalchemy.orm import Session
 
 from .. import schemas, database, models
 from ..database import get_db
+from ..repositories import blog
 
 router = APIRouter(
     prefix="/blog",
@@ -14,8 +15,7 @@ router = APIRouter(
 
 @router.get("/", response_model=List[schemas.ShowBlog])
 def get_all_blogs(db: Session = Depends(database.get_db)):
-    blogs = db.query(models.Blog).all()
-    return blogs
+    return blog.get_all(db)
 
 
 @router.get("/{id}", status_code=status.HTTP_200_OK, response_model=schemas.ShowBlog)
