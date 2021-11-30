@@ -4,7 +4,7 @@ from fastapi import FastAPI, Depends, Response, status, HTTPException
 from sqlalchemy.orm import Session
 
 from . import schemas, models
-from .database import engine, SessionLocal
+from .database import engine, get_db
 from .hashing import Hash
 
 app = FastAPI()
@@ -12,12 +12,12 @@ app = FastAPI()
 models.Base.metadata.create_all(engine)
 
 
-def get_db():
-    db = SessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# def get_db():
+#     db = SessionLocal()
+#     try:
+#         yield db
+#     finally:
+#         db.close()
 
 
 @app.get("/blog", response_model=List[schemas.ShowBlog], tags=["blogs"])
