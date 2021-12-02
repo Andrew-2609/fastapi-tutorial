@@ -13,6 +13,7 @@ router = APIRouter(
 )
 
 
+# noinspection PyUnusedLocal
 @router.get("/", response_model=List[schemas.ShowBlog])
 def get_all_blogs(db: Session = Depends(database.get_db),
                   current_user: schemas.User = Depends(oauth2.get_current_user)):
