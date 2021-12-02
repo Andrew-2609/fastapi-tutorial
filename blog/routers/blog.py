@@ -3,7 +3,7 @@ from typing import List
 from fastapi import APIRouter, Depends, status
 from sqlalchemy.orm import Session
 
-from .. import schemas, database
+from .. import schemas, database, oauth2
 from ..database import get_db
 from ..repositories import blog
 
@@ -14,7 +14,7 @@ router = APIRouter(
 
 
 @router.get("/", response_model=List[schemas.ShowBlog])
-def get_all_blogs(db: Session = Depends(database.get_db)):
+def get_all_blogs(db: Session = Depends(database.get_db), get_current_user: schemas.User = Depends(oauth2.get_current_user)):
     return blog.get_all(db)
 
 
