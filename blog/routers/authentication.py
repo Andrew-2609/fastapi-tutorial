@@ -1,6 +1,7 @@
 from fastapi import Depends, APIRouter, HTTPException, status
 from sqlalchemy.orm import Session
 
+from .. import JWTToken
 from .. import schemas, models
 from ..database import get_db
 from ..hashing import Hash
@@ -19,4 +20,6 @@ def login(request: schemas.Login, db: Session = Depends(get_db)):
     if not Hash.verify(request.password, user.password):
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid credentials!")
 
-    return user
+    access_token = JWTToken.create_access_token(data={"sub": user.email})
+
+    return {"access_token": access_token, "token_type": "bearer"}
