@@ -23,10 +23,12 @@ class ShowUser(BaseModel):
     name: str
     email: str
 
-    blogs: List[Blog] = []
-
     class Config:
         orm_mode = True
+
+
+class ShowUserWithBlogs(ShowUser):
+    blogs: List[Blog] = []
 
 
 class ShowBlog(BaseModel):

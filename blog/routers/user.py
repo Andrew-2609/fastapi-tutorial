@@ -11,11 +11,11 @@ router = APIRouter(
 )
 
 
-@router.get("/{id}", response_model=schemas.ShowUser)
+@router.get("/{id}", response_model=schemas.ShowUserWithBlogs)
 def get_user_by_id(user_id: int, db: Session = Depends(get_db)):
     return user.get_by_id(user_id, db)
 
 
-@router.post("/", response_model=schemas.ShowUser)
+@router.post("/", response_model=schemas.ShowUserWithBlogs)
 def create_user(request: schemas.User, db: Session = Depends(get_db)):
     return user.create(request, db)
